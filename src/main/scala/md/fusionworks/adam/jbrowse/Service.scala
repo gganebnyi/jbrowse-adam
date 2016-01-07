@@ -29,27 +29,31 @@ trait Service extends HttpService {
     get {
       path("data" / "trackList.json") {
         complete {
-          JbrowseUtil.getTrackList
+          JBrowseUtil.getTrackList
         }
       }
     } ~
       get {
         path("data" / "seq" / "refSeqs.json") {
           complete {
-            JbrowseUtil.getRefSeqs
+            JBrowseUtil.getRefSeqs
           }
         }
       } ~
       get {
         path("data" / "stats" / "global") {
           complete {
-            JbrowseUtil.getGlobal
+            JBrowseUtil.getGlobal
           }
         }
       } ~
       path("data" / "features" / Rest) { pathRest =>
-          parameters('start, 'end) { (start, end) =>
-          complete(JbrowseUtil.getFeatures(start.toLong, end.toLong))
+        parameters('start, 'end,'reference_sequences_only.as[Boolean]?) {
+          (start, end, reference_sequences_only) =>
+            if(reference_sequences_only == Some(true))
+          complete(JBrowseUtil.getReferenceFeatures(start.toLong, end.toLong, pathRest))
+            else
+              complete(JBrowseUtil.getAlignmentFeatures(start.toLong, end.toLong, pathRest))
         }
       } ~
       path("") {
@@ -60,4 +64,3 @@ trait Service extends HttpService {
   }
 
 }
-

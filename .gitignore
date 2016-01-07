@@ -1,3 +1,5 @@
 .idea
 src/main/resources/jbrowse
 target
+src/main/scala/md/fusionworks/adam/jbrowse/models/test
+*.log
